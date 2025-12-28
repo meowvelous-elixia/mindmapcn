@@ -5,11 +5,11 @@ import { Footer } from "./_components/footer";
 
 export default function Page() {
   return (
-    <div className="min-h-screen bg-background flex flex-col">
-      <Header className="max-w-5xl mx-auto" />
+    <div className="min-h-screen bg-background flex flex-col overflow-x-hidden">
+      <Header className="max-w-5xl mx-auto w-full" />
 
-      <main className="flex-1 px-6 py-16 mx-auto">
-        <section className="max-w-5xl w-full space-y-12">
+      <main className="flex-1 px-6 py-16 mx-auto w-full">
+        <section className="max-w-5xl w-full mx-auto space-y-12">
           <Hero />
           <Examples />
         </section>

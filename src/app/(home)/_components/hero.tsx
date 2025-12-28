@@ -42,22 +42,22 @@ export function Hero() {
         </p>
       </div>
 
-      <div className="flex justify-center animate-fade-up delay-200">
-        <div className="inline-flex items-center gap-3 bg-secondary/50 border border-border/50 rounded-full px-5 py-2.5 font-mono text-sm">
-          <span className="text-muted-foreground">$</span>
+      <div className="flex justify-center animate-fade-up delay-200 w-full px-4">
+        <div className="inline-flex items-center gap-3 bg-secondary/50 border border-border/50 rounded-full px-5 py-2.5 font-mono text-sm max-w-full overflow-x-auto">
+          <span className="text-muted-foreground shrink-0">$</span>
           <code>{installCommand}</code>
           <CopyButton text={installCommand} />
         </div>
       </div>
 
-      <div className="flex justify-center items-center gap-3 animate-fade-up delay-300">
+      <div className="flex flex-wrap justify-center items-center gap-3 animate-fade-up delay-300">
         <Button asChild>
           <Link href="/docs">
             Get Started <ArrowRight className="size-4" />
           </Link>
         </Button>
-        <Button size="lg" variant="outline" asChild>
-          <Link href="/docs/basic-map">View Examples </Link>
+        <Button variant="outline" size="lg" asChild>
+          <Link href="/docs/basic-map">View Examples</Link>
         </Button>
       </div>
     </div>

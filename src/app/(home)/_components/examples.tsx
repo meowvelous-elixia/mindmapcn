@@ -60,11 +60,11 @@ export function Examples() {
   } | null>(null);
 
   return (
-    <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mt-8 animate-fade-in delay-400">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mt-8 animate-fade-in delay-400">
       {/* Widget 1: Analytics - spans 2 cols, 2 rows */}
       <ExampleCard
         label=""
-        className="col-span-2 row-span-2 h-[300px] lg:h-[412px]"
+        className="col-span-1 sm:col-span-2 sm:row-span-2 h-[300px] lg:h-[412px]"
         delay="delay-400"
       >
         {/* Stats Panel */}
