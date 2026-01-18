@@ -35,7 +35,7 @@ export default function InstallationPage() {
   return (
     <DocsLayout
       title="Installation"
-      description="How to install and set up mapcn in your project."
+      description="How to install and set up mindmapcn in your project."
       prev={{ title: "Introduction", href: "/docs" }}
       next={{ title: "API Reference", href: "/docs/api-reference" }}
     >

@@ -7,7 +7,7 @@ export async function GitHubButton() {
   return (
     <Button variant="ghost" size="sm" className="h-8 px-2 gap-1.5" asChild>
       <Link
-        href="https://github.com/AnmolSaini16/mapcn"
+        href="https://github.com/ssshooter/mindmapcn"
         target="_blank"
         rel="noopener noreferrer"
       >
@@ -30,7 +30,7 @@ export async function GitHubButton() {
 
 export async function StarCount() {
   const response = await fetch(
-    "https://api.github.com/repos/AnmolSaini16/mapcn",
+    "https://api.github.com/repos/ssshooter/mindmapcn",
     { next: { revalidate: 60 } }
   );
 

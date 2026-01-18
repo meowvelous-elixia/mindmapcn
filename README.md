@@ -10,9 +10,9 @@
   </p>
   
   <p>
-    <a href="https://mapcn.vercel.app">Get Started</a> •
-    <a href="https://mapcn.vercel.app/docs/installation">Installation</a> •
-    <a href="https://mapcn.vercel.app/docs/basic-mindmap">Examples</a>
+    <a href="https://mindmapcn.vercel.app">Get Started</a> •
+    <a href="https://mindmapcn.vercel.app/docs/installation">Installation</a> •
+    <a href="https://mindmapcn.vercel.app/docs/basic-mindmap">Examples</a>
   </p>
 </div>
 

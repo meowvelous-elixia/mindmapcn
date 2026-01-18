@@ -22,7 +22,7 @@ export function Header({ className, leftContent }: HeaderProps) {
             className="flex items-center gap-1.5 hover:opacity-80 transition-opacity"
           >
             <MapPin className="size-4" />
-            <span className="font-semibold tracking-tight">mapcn</span>
+            <span className="font-semibold tracking-tight">mindmapcn</span>
           </Link>
         </div>
         <div className="flex items-center gap-1.5 h-4">

@@ -7,7 +7,7 @@ export function Footer() {
         <span>
           Built by{" "}
           <a
-            href="https://github.com/AnmolSaini16"
+            href="https://github.com/ssshooter"
             target="_blank"
             rel="noopener noreferrer"
             className="font-medium text-foreground hover:underline"
@@ -17,7 +17,7 @@ export function Footer() {
         </span>
         <div className="flex items-center gap-4">
           <a
-            href="https://github.com/AnmolSaini16/mapcn"
+            href="https://github.com/ssshooter/mindmapcn"
             target="_blank"
             rel="noopener noreferrer"
             className="hover:text-foreground transition-colors"

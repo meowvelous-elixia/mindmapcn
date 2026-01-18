@@ -39,7 +39,7 @@ export default function IntroductionPage() {
     >
       <DocsSection>
         <p>
-          <strong className="text-foreground">mapcn</strong> provides
+          <strong className="text-foreground">mindmapcn</strong> provides
           beautifully designed, accessible, and customizable map components.
           Built on{" "}
           <DocsLink href="https://maplibre.org" external>
@@ -57,11 +57,11 @@ export default function IntroductionPage() {
         </p>
       </DocsSection>
 
-      <DocsSection title="Why mapcn?">
+      <DocsSection title="Why mindmapcn?">
         <p>
           There&apos;s no proper copy-paste, easy-to-use map integration for
           React. Most solutions require complex configurations, API keys, or
-          heavy wrapper libraries. mapcn gives you beautiful maps with a single
+          heavy wrapper libraries. mindmapcn gives you beautiful maps with a single
           command.
         </p>
       </DocsSection>
