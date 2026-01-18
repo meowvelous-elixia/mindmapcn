@@ -2,12 +2,13 @@
 
 import { MindMap, MindMapControls } from "@/registry/mindmap";
 import { ExampleCard } from "./example-card";
+import { MindElixirData } from "mind-elixir";
+import { useState } from "react";
 
-const brainstormingData = {
+const brainstormingData: MindElixirData = {
   nodeData: {
     id: "root",
     topic: "Mobile App Ideas",
-    root: true,
     children: [
       {
         id: "productivity",
@@ -52,6 +53,7 @@ const brainstormingData = {
 };
 
 export function Brainstorming() {
+  const [mindmapData, setMindmapData] = useState(brainstormingData);
   return (
     <ExampleCard
       label="Brainstorming"
@@ -59,9 +61,13 @@ export function Brainstorming() {
       delay="delay-700"
     >
       <MindMap
-        data={brainstormingData}
         direction={1}
         className="h-full"
+        data={mindmapData}
+        onChange={(newData) => {
+          console.log("数据已更新:", newData);
+          setMindmapData(newData);
+        }}
       >
         <MindMapControls position="top-right" showExport={false} />
       </MindMap>

@@ -118,10 +118,10 @@
 
 @layer base {
   * {
-    @apply border-border outline-ring/50 overscroll-none;
+    @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground font-sans;
+    @apply bg-background text-foreground font-sans overscroll-none;
   }
   .maplibregl-popup-content {
     @apply bg-transparent! shadow-none! p-0! rounded-none!;

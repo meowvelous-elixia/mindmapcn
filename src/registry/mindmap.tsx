@@ -14,7 +14,7 @@ import {
 import { Minus, Plus, Download, Maximize2, Loader2 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-import { type MindElixirInstance, type NodeObj, type Options, type Theme as MindElixirTheme } from "mind-elixir";
+import { type MindElixirInstance, type MindElixirData, type NodeObj, type Options, type Theme as MindElixirTheme } from "mind-elixir";
 
 // Check document class for theme (works with next-themes, etc.)
 function getDocumentTheme(): Theme | null {
@@ -90,15 +90,7 @@ export function useMindMap() {
 }
 
 // MindMap Props
-interface MindMapData {
-  nodeData: {
-    id: string;
-    topic: string;
-    root?: boolean;
-    children?: MindMapData["nodeData"][];
-    [key: string]: unknown;
-  };
-}
+type MindMapData = MindElixirData;
 
 interface MindMapProps {
   children?: ReactNode;
@@ -116,6 +108,7 @@ interface MindMapProps {
   theme?: "dark" | "light";
   monochrome?: boolean;
   fit?: boolean;
+  onChange?: (data: MindMapData) => void;
   onOperation?: (operation: unknown) => void;
   onSelectNodes?: (nodeObj: NodeObj[]) => void;
   loader?: ReactNode;
@@ -296,6 +289,7 @@ export function MindMap({
   theme: themeProp,
   monochrome = false,
   fit = true,
+  onChange,
   onOperation,
   onSelectNodes,
   loader,
@@ -315,6 +309,20 @@ export function MindMap({
   useEffect(() => {
     resolvedThemeRef.current = resolvedTheme;
   }, [resolvedTheme]);
+
+  // Store callbacks in refs to avoid re-initialization when they change
+  const onChangeRef = useRef(onChange);
+  const onOperationRef = useRef(onOperation);
+  const onSelectNodesRef = useRef(onSelectNodes);
+  
+  useEffect(() => {
+    onChangeRef.current = onChange;
+    onOperationRef.current = onOperation;
+    onSelectNodesRef.current = onSelectNodes;
+  }, [onChange, onOperation, onSelectNodes]);
+
+  // Store initial data in ref - only used for initialization, not reactive
+  const initialDataRef = useRef(data);
 
   // Ensure component only renders on client
   useEffect(() => {
@@ -352,8 +360,8 @@ export function MindMap({
       try {
         const mind = new MindElixir(options);
 
-        // Initialize with data or create new
-        const initialData = data || MindElixir.new("Mind Map");
+        // Initialize with initial data from ref (not reactive to data prop changes)
+        const initialData = initialDataRef.current || MindElixir.new("Mind Map");
         mind.init(initialData);
 
         if (isSubscribed) {
@@ -366,12 +374,25 @@ export function MindMap({
             mind.scaleFit();
           }
 
-          // Event listeners
-          if (onOperation) {
-            mind.bus.addListener("operation", onOperation);
-          }
-          if (onSelectNodes) {
-            mind.bus.addListener("selectNodes", onSelectNodes);
+          // Event listeners (using refs to avoid re-initialization)
+          mind.bus.addListener("operation", (operation) => {
+            // Call onOperation if provided
+            if (onOperationRef.current) {
+              onOperationRef.current(operation);
+            }
+            // Call onChange if provided
+            if (onChangeRef.current) {
+              const updatedData = mind.getData();
+              // Mark this as an internal change to prevent refresh loop
+              isInternalChangeRef.current = true;
+              onChangeRef.current(updatedData);
+            }
+          });
+          
+          if (onSelectNodesRef.current) {
+            mind.bus.addListener("selectNodes", (nodeObj) => {
+              onSelectNodesRef.current?.(nodeObj);
+            });
           }
         }
       } catch (error) {
@@ -399,14 +420,19 @@ export function MindMap({
     mainLinkStyle,
     monochrome,
     fit,
-    data,
-    onOperation,
-    onSelectNodes,
   ]);
 
+  // Track internal changes to avoid refresh loops
+  const isInternalChangeRef = useRef(false);
+  
   // Update data when it changes
   useEffect(() => {
     if (mindRef.current && data && isLoaded) {
+      // Skip refresh if this change came from onChange (internal change)
+      if (isInternalChangeRef.current) {
+        isInternalChangeRef.current = false;
+        return;
+      }
       mindRef.current.refresh(data);
     }
   }, [data, isLoaded]);
