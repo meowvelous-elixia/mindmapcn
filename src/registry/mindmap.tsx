@@ -3,7 +3,6 @@
 import "mind-elixir/style.css";
 import {
   createContext,
-  useCallback,
   useContext,
   useEffect,
   useId,
@@ -11,10 +10,11 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import { Minus, Plus, Download, Maximize2, Loader2 } from "lucide-react";
+import { Minus, Plus, Download, Loader2, Maximize, ScanSearch } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { type MindElixirInstance, type MindElixirData, type NodeObj, type Options, type Theme as MindElixirTheme } from "mind-elixir";
+import { snapdom } from "@zumer/snapdom";
 
 // Check document class for theme (works with next-themes, etc.)
 function getDocumentTheme(): Theme | null {
@@ -482,50 +482,83 @@ export function MindMapControls({
 }: MindMapControlsProps) {
   const { mind, isLoaded } = useMindMap();
   const [mounted, setMounted] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => setMounted(true), 0);
     return () => clearTimeout(timer);
   }, []);
 
-  const handleZoomIn = useCallback(() => {
+  const handleZoomIn = () => {
     if (mind) {
       const currentScale = mind.scaleVal || 1;
       mind.scale(currentScale + 0.2);
     }
-  }, [mind]);
+  };
 
-  const handleZoomOut = useCallback(() => {
+  const handleZoomOut = () => {
     if (mind) {
       const currentScale = mind.scaleVal || 1;
       mind.scale(Math.max(0.2, currentScale - 0.2));
     }
-  }, [mind]);
+  };
 
-  const handleFit = useCallback(() => {
+  const handleFit = () => {
     if (mind) {
       mind.scaleFit();
     }
-  }, [mind]);
+  };
 
-  const handleExport = useCallback(() => {
-    if (mind && onExport) {
-      // Export as JSON by default
-      const data = mind.getData();
-      onExport("json");
-
-      // Download JSON
-      const blob = new Blob([JSON.stringify(data, null, 2)], {
-        type: "application/json",
-      });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "mindmap.json";
-      a.click();
-      URL.revokeObjectURL(url);
+  const handleExport = async () => {
+    if (mind) {
+      try {
+        // Export as image using snapdom
+        const result = await snapdom(mind.nodes);
+        await result.download({ type: "jpg", filename: "mindmap" });
+        
+        if (onExport) {
+          onExport("png");
+        }
+      } catch (error) {
+        console.error("Failed to export mind map:", error);
+      }
     }
-  }, [mind, onExport]);
+  };
+
+  const handleFullscreen = () => {
+    const container = mind?.container?.parentElement;
+    if (!container) return;
+
+    if (!document.fullscreenElement) {
+      container.requestFullscreen().then(() => {
+        setIsFullscreen(true);
+      }).catch((err) => {
+        console.error("Failed to enter fullscreen:", err);
+      });
+    } else {
+      document.exitFullscreen().then(() => {
+        setIsFullscreen(false);
+      });
+    }
+  };
+
+  // Listen for fullscreen changes
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      const isNowFullscreen = !!document.fullscreenElement;
+      setIsFullscreen(isNowFullscreen);
+      
+      // When exiting fullscreen, call scaleFit to ensure content is visible
+      if (!isNowFullscreen && mind) {
+        mind.scaleFit();
+      }
+    };
+
+    document.addEventListener("fullscreenchange", handleFullscreenChange);
+    return () => {
+      document.removeEventListener("fullscreenchange", handleFullscreenChange);
+    };
+  }, [mind]);
 
   if (!mounted || !isLoaded) return null;
 
@@ -568,14 +601,21 @@ export function MindMapControls({
           className="size-8 rounded-md bg-background/95 backdrop-blur-md border border-border/50 shadow-lg flex items-center justify-center hover:bg-accent transition-colors"
           aria-label="Fit to screen"
         >
-          <Maximize2 className="size-4" />
+          <ScanSearch className="size-4" />
         </button>
       )}
+      <button
+        onClick={handleFullscreen}
+        className="size-8 rounded-md bg-background/95 backdrop-blur-md border border-border/50 shadow-lg flex items-center justify-center hover:bg-accent transition-colors"
+        aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
+      >
+        <Maximize className="size-4" />
+      </button>
       {showExport && (
         <button
           onClick={handleExport}
           className="size-8 rounded-md bg-background/95 backdrop-blur-md border border-border/50 shadow-lg flex items-center justify-center hover:bg-accent transition-colors"
-          aria-label="Export"
+          aria-label="Download as image"
         >
           <Download className="size-4" />
         </button>
