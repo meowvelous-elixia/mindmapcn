@@ -184,23 +184,42 @@ function createTheme(
   };
 }
 
+// Base color configurations
+const lightColors = {
+  mainColor: "oklch(0.145 0 0)",           // foreground
+  mainBgcolor: "oklch(1 0 0)",             // background (white)
+  color: "oklch(0.145 0 0)",               // foreground
+  bgcolor: "oklch(1 0 0)",                 // card background
+  selected: "oklch(0.205 0 0)",            // primary
+  rootColor: "oklch(0.985 0 0)",           // primary-foreground
+  rootBgcolor: "oklch(0.205 0 0)",         // primary
+  rootBorderColor: "oklch(0.205 0 0)",     // primary
+  panelColor: "oklch(0.145 0 0)",          // foreground
+  panelBgcolor: "oklch(1 0 0)",            // popover
+  panelBorderColor: "oklch(0.922 0 0)",    // border
+};
+
+const darkColors = {
+  mainColor: "oklch(0.985 0 0)",           // foreground
+  mainBgcolor: "oklch(0.145 0 0)",         // background (dark)
+  color: "oklch(0.985 0 0)",               // foreground
+  bgcolor: "oklch(0.205 0 0)",             // card background
+  selected: "oklch(0.922 0 0)",            // primary
+  rootColor: "oklch(0.205 0 0)",           // primary-foreground
+  rootBgcolor: "oklch(0.922 0 0)",         // primary
+  rootBorderColor: "oklch(0.922 0 0)",     // primary
+  panelColor: "oklch(0.985 0 0)",          // foreground
+  panelBgcolor: "oklch(0.205 0 0)",        // popover
+  panelBorderColor: "oklch(1 0 0 / 10%)",  // border
+};
+
 // Shadcn-styled light theme
 const lightTheme: MindElixirTheme = createTheme(
   "shadcn-light",
   "light",
   {
-    mainColor: "oklch(0.145 0 0)",           // foreground
-    mainBgcolor: "oklch(1 0 0)",             // background (white)
-    color: "oklch(0.145 0 0)",               // foreground
-    bgcolor: "oklch(1 0 0)",                 // card background
-    selected: "oklch(0.205 0 0)",            // primary
+    ...lightColors,
     accentColor: "oklch(0.646 0.222 41.116)", // chart-1 (vibrant)
-    rootColor: "oklch(0.985 0 0)",           // primary-foreground
-    rootBgcolor: "oklch(0.205 0 0)",         // primary
-    rootBorderColor: "oklch(0.205 0 0)",     // primary
-    panelColor: "oklch(0.145 0 0)",          // foreground
-    panelBgcolor: "oklch(1 0 0)",            // popover
-    panelBorderColor: "oklch(0.922 0 0)",    // border
   },
   [
     "oklch(0.646 0.222 41.116)", // chart-1: vibrant orange
@@ -218,18 +237,8 @@ const darkTheme: MindElixirTheme = createTheme(
   "shadcn-dark",
   "dark",
   {
-    mainColor: "oklch(0.985 0 0)",           // foreground
-    mainBgcolor: "oklch(0.145 0 0)",         // background (dark)
-    color: "oklch(0.985 0 0)",               // foreground
-    bgcolor: "oklch(0.205 0 0)",             // card background
-    selected: "oklch(0.922 0 0)",            // primary
+    ...darkColors,
     accentColor: "oklch(0.488 0.243 264.376)", // chart-1 (purple)
-    rootColor: "oklch(0.205 0 0)",           // primary-foreground
-    rootBgcolor: "oklch(0.922 0 0)",         // primary
-    rootBorderColor: "oklch(0.922 0 0)",     // primary
-    panelColor: "oklch(0.985 0 0)",          // foreground
-    panelBgcolor: "oklch(0.205 0 0)",        // popover
-    panelBorderColor: "oklch(1 0 0 / 10%)",  // border
   },
   [
     "oklch(0.488 0.243 264.376)", // chart-1: purple
@@ -242,23 +251,13 @@ const darkTheme: MindElixirTheme = createTheme(
   ]
 );
 
-// Monochrome variants
+// Monochrome variants - reuse base colors, only change accentColor and palette
 const lightThemeMonochrome: MindElixirTheme = createTheme(
   "shadcn-light-mono",
   "light",
   {
-    mainColor: "oklch(0.145 0 0)",
-    mainBgcolor: "oklch(1 0 0)",
-    color: "oklch(0.145 0 0)",
-    bgcolor: "oklch(1 0 0)",
-    selected: "oklch(0.205 0 0)",
-    accentColor: "oklch(0.205 0 0)",         // primary
-    rootColor: "oklch(0.985 0 0)",
-    rootBgcolor: "oklch(0.205 0 0)",
-    rootBorderColor: "oklch(0.205 0 0)",
-    panelColor: "oklch(0.145 0 0)",
-    panelBgcolor: "oklch(1 0 0)",
-    panelBorderColor: "oklch(0.922 0 0)",
+    ...lightColors,
+    accentColor: "oklch(0.205 0 0)", // primary
   },
   ["oklch(0.205 0 0)"] // Single primary color
 );
@@ -267,18 +266,8 @@ const darkThemeMonochrome: MindElixirTheme = createTheme(
   "shadcn-dark-mono",
   "dark",
   {
-    mainColor: "oklch(0.985 0 0)",
-    mainBgcolor: "oklch(0.145 0 0)",
-    color: "oklch(0.985 0 0)",
-    bgcolor: "oklch(0.205 0 0)",
-    selected: "oklch(0.922 0 0)",
-    accentColor: "oklch(0.922 0 0)",         // primary
-    rootColor: "oklch(0.205 0 0)",
-    rootBgcolor: "oklch(0.922 0 0)",
-    rootBorderColor: "oklch(0.922 0 0)",
-    panelColor: "oklch(0.985 0 0)",
-    panelBgcolor: "oklch(0.205 0 0)",
-    panelBorderColor: "oklch(1 0 0 / 10%)",
+    ...darkColors,
+    accentColor: "oklch(0.922 0 0)", // primary
   },
   ["oklch(0.922 0 0)"] // Single primary color
 )
@@ -427,7 +416,7 @@ export function MindMap({
     if (!mindRef.current || !isLoaded) return;
 
     const newTheme = getTheme(resolvedTheme === "dark", monochrome);
-    mindRef.current.changeTheme(newTheme, false);
+    mindRef.current.changeTheme(newTheme);
   }, [resolvedTheme, monochrome, isLoaded]);
 
   return (
