@@ -65,6 +65,75 @@ const knowledgeGraphData: MindElixirData = {
       },
     ],
   },
+  arrows: [
+    {
+      id: "arrow1",
+      label: "Styling",
+      from: "html",
+      to: "css",
+      delta1: { x: 80, y: 0 },
+      delta2: { x: 80, y: 0 },
+      style: {
+        stroke: "#3b82f6",
+        strokeWidth: 2,
+        labelColor: "#3b82f6",
+      },
+    },
+    {
+      id: "arrow2",
+      label: "Interactivity",
+      from: "css",
+      to: "js",
+      delta1: { x: 80, y: 0 },
+      delta2: { x: 80, y: 0 },
+      style: {
+        stroke: "#8b5cf6",
+        strokeWidth: 2,
+        labelColor: "#8b5cf6",
+      },
+    },
+    {
+      id: "arrow3",
+      label: "Runtime",
+      from: "js",
+      to: "nodejs",
+      delta1: { x: 0, y: 30 },
+      delta2: { x: 0, y: -30 },
+      style: {
+        stroke: "#10b981",
+        strokeWidth: 2,
+        strokeDasharray: "5,5",
+        labelColor: "#10b981",
+      },
+    },
+    {
+      id: "arrow4",
+      label: "Persistence",
+      from: "nodejs",
+      to: "database",
+      delta1: { x: 80, y: 0 },
+      delta2: { x: 80, y: 0 },
+      style: {
+        stroke: "#f59e0b",
+        strokeWidth: 2,
+        labelColor: "#f59e0b",
+      },
+    },
+    {
+      id: "arrow5",
+      label: "API Communication",
+      from: "frontend",
+      to: "backend",
+      delta1: { x: 0, y: 40 },
+      delta2: { x: 0, y: -40 },
+      bidirectional: true,
+      style: {
+        stroke: "#ef4444",
+        strokeWidth: 3,
+        labelColor: "#ef4444",
+      },
+    },
+  ],
 };
 
 export function KnowledgeGraph({ className }: { className?: string }) {

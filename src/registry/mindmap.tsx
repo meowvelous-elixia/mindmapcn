@@ -108,7 +108,7 @@ interface MindMapProps {
   theme?: "dark" | "light";
   monochrome?: boolean;
   fit?: boolean;
-  onChange?: (data: MindMapData) => void;
+  onChange?: (data: MindMapData, operation: unknown) => void;
   onOperation?: (operation: unknown) => void;
   onSelectNodes?: (nodeObj: NodeObj[]) => void;
   loader?: ReactNode;
@@ -376,6 +376,8 @@ export function MindMap({
 
           // Event listeners (using refs to avoid re-initialization)
           mind.bus.addListener("operation", (operation) => {
+            console.log(operation);
+
             // Call onOperation if provided
             if (onOperationRef.current) {
               onOperationRef.current(operation);
@@ -385,7 +387,7 @@ export function MindMap({
               const updatedData = mind.getData();
               // Mark this as an internal change to prevent refresh loop
               isInternalChangeRef.current = true;
-              onChangeRef.current(updatedData);
+              onChangeRef.current(updatedData, operation);
             }
           });
           
