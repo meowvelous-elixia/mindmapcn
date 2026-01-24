@@ -195,14 +195,14 @@ const decisionTreeData: MindElixirData  = {
 export function DecisionTree({ className }: { className?: string }) {
   return (
     <ExampleCard
-      label="Decision Tree"
+      label="Readonly Decision Tree"
       className={className}
       delay="delay-800"
     >
       <MindMap
         data={decisionTreeData}
-        direction={1}
         className="h-full"
+        readonly
       >
         <MindMapControls position="top-right" showExport={false} />
       </MindMap>
