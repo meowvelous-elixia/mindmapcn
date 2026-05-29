@@ -463,9 +463,8 @@ export const MindMap = forwardRef<MindMapRef, MindMapProps>(function MindMap(
   useEffect(() => {
     if (!mindRef.current || !isLoaded) return;
 
-    // Check if current data has its own theme
-    const currentData = mindRef.current.getData();
-    if (currentData.theme) {
+    // Check if the provided data prop has its own theme
+    if (data?.theme) {
       // Data has its own theme, don't override it with prop changes
       return;
     }
@@ -473,7 +472,7 @@ export const MindMap = forwardRef<MindMapRef, MindMapProps>(function MindMap(
     // No theme in data, apply theme from props
     const newTheme = getTheme(resolvedTheme === "dark", monochrome);
     mindRef.current.changeTheme(newTheme);
-  }, [resolvedTheme, monochrome, isLoaded]);
+  }, [resolvedTheme, monochrome, isLoaded, data?.theme]);
 
   return (
     <MindMapContext.Provider value={{ mind: mindInstance, isLoaded }}>

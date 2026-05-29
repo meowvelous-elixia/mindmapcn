@@ -36,8 +36,8 @@ importers:
         specifier: ^0.562.0
         version: 0.562.0(react@19.2.3)
       mind-elixir:
-        specifier: ^5.9.1
-        version: 5.9.1
+        specifier: ^5.12.2
+        version: 5.12.2
       next:
         specifier: 16.1.1
         version: 16.1.1(@babel/core@7.28.5)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -2552,8 +2552,8 @@ packages:
     resolution: {integrity: sha512-VP79XUPxV2CigYP3jWwAUFSku2aKqBH7uTAapFWCBqutsbmDo96KY5o8uh6U+/YSIn5OxJnXp73beVkpqMIGhA==}
     engines: {node: '>=18'}
 
-  mind-elixir@5.9.1:
-    resolution: {integrity: sha512-bEQi/BKlKt068NbyeFeGklZZpVTVfmrqKvPEhpgSTpCMgwEmofk1J/bglfE+4j1MQQzgoMZ9y1gmF5NlQD2EeA==}
+  mind-elixir@5.12.2:
+    resolution: {integrity: sha512-G9eyrmjp6Ot+Llf5oPZPj2N5ivzDVwiQpiJEaX7uTUvIRkUwkyoTW1vSKKayl6ZzRoEWE87zupEdlEJWwtqqVg==}
 
   minimatch@10.1.1:
     resolution: {integrity: sha512-enIvLvRAFZYXJzkCYG5RKmPfrFArdLv+R+lbQ53BmIMLIry74bjKzX6iHAm8WYamJkhSSEabrWN5D97XnKObjQ==}
@@ -5982,7 +5982,7 @@ snapshots:
 
   mimic-function@5.0.1: {}
 
-  mind-elixir@5.9.1: {}
+  mind-elixir@5.12.2: {}
 
   minimatch@10.1.1:
     dependencies:
