@@ -8,6 +8,7 @@ import {
   Braces,
   Map,
   Database,
+  Bot,
 } from "lucide-react";
 
 import {
@@ -29,6 +30,7 @@ const navigation = [
     items: [
       { title: "Introduction", href: "/docs", icon: BookOpen },
       { title: "Installation", href: "/docs/installation", icon: Code },
+      { title: "llms.txt", href: "/llms.txt", icon: Bot },
       { title: "Usage", href: "/docs/usage", icon: Map },
       {
         title: "Data Structure",

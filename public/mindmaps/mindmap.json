@@ -2,7 +2,7 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "mindmap",
   "title": "MindMap",
-  "description": "A MindElixir-powered map component with markers, popups, tooltips, routes, and controls.",
+  "description": "A Mind Elixir-powered mind map component with theme-aware styling, controls, and presentation-first defaults.",
   "dependencies": [
     "mind-elixir",
     "lucide-react",
@@ -18,5 +18,24 @@
     }
   ],
   "css": {},
+  "meta": {
+    "components": [
+      {
+        "title": "MindMap",
+        "href": "/llm/mindmap",
+        "description": "Root Mind Elixir map component for presentation-first diagrams."
+      },
+      {
+        "title": "MindMapControls",
+        "href": "/docs/api-reference",
+        "description": "Zoom, fit-to-view, and export controls."
+      },
+      {
+        "title": "useMindMap",
+        "href": "/docs/api-reference",
+        "description": "Access the Mind Elixir instance and load state from child components."
+      }
+    ]
+  },
   "type": "registry:ui"
 }
