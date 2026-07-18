@@ -12,7 +12,7 @@ export function Footer() {
             rel="noopener noreferrer"
             className="font-medium text-foreground hover:underline"
           >
-            Anmol
+            SSShooter
           </a>
         </span>
         <div className="flex items-center gap-4">

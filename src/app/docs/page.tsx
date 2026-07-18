@@ -1,5 +1,10 @@
 import { Zap, Moon, Puzzle, Code } from "lucide-react";
-import { DocsLayout, DocsSection, DocsLink } from "./_components/docs";
+import {
+  DocsLayout,
+  DocsSection,
+  DocsLink,
+  DocsCode,
+} from "./_components/docs";
 import { Metadata } from "next";
 
 const features = [
@@ -12,7 +17,8 @@ const features = [
   {
     icon: Moon,
     title: "Theme Aware",
-    description: "Automatically adapts to light and dark mode with Shadcn UI integration.",
+    description:
+      "Automatically adapts to light and dark mode with Shadcn UI integration.",
   },
   {
     icon: Puzzle,
@@ -34,7 +40,7 @@ export default function IntroductionPage() {
   return (
     <DocsLayout
       title="Introduction"
-      description="Beautiful, accessible mind map components."
+      description="Beautiful, accessible mind map components for presentation-first apps."
       next={{ title: "Installation", href: "/docs/installation" }}
     >
       <DocsSection>
@@ -57,10 +63,34 @@ export default function IntroductionPage() {
         </p>
       </DocsSection>
 
+      <DocsSection title="Presentation first">
+        <p>
+          mindmapcn is optimized for <strong className="text-foreground">display and
+          embedding</strong> — org charts, knowledge maps, project plans, and other
+          read-mostly diagrams. Prefer{" "}
+          <DocsCode>readonly</DocsCode> when viewers should not edit nodes.
+        </p>
+        <p>
+          Editing still works if you leave the map interactive, but this library is
+          not a full mind-map editor UI (no built-in undo toolbar, inspector, etc.).
+          For the complete instance API — methods, events, and advanced options —
+          use <DocsCode>useMindMap().mind</DocsCode> and see{" "}
+          <DocsLink
+            href="https://github.com/ssshooter/mind-elixir-core"
+            external
+          >
+            Mind Elixir Core
+          </DocsLink>
+          .
+        </p>
+      </DocsSection>
+
       <DocsSection title="Why mindmapcn?">
         <p>
-          Integrating a mind map into a React application usually involves complex wrappers or outdated libraries.
-          mindmapcn gives you a modern, beautiful, and fully typed Mind Map component that fits perfectly into your shadcn/ui based application.
+          Integrating a mind map into a React application usually involves complex
+          wrappers or outdated libraries. mindmapcn gives you a modern, beautiful,
+          and fully typed Mind Map component that fits a shadcn/ui-based app with
+          sensible defaults for themes, controls, and layout.
         </p>
       </DocsSection>
 

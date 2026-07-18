@@ -32,6 +32,9 @@ import {
 import MindElixir from "mind-elixir";
 import { snapdom, SnapdomOptions } from "@zumer/snapdom";
 
+/** Custom markdown parser — same signature as Mind Elixir `Options.markdown`. */
+export type MindMapMarkdownParser = NonNullable<Options["markdown"]>;
+
 // Check document class for theme (works with next-themes, etc.)
 function getDocumentTheme(): Theme | null {
   if (typeof document === "undefined") return null;
@@ -119,15 +122,30 @@ interface MindMapProps {
   className?: string;
   direction?: 0 | 1 | 2;
   contextMenu?: boolean;
-  nodeMenu?: boolean;
   keypress?: boolean;
   locale?: "en" | "zh_CN" | "zh_TW" | "ja" | "pt";
   overflowHidden?: boolean;
-  mainLinkStyle?: number;
   theme?: "dark" | "light";
   monochrome?: boolean;
   fit?: boolean;
   readonly?: boolean;
+  /**
+   * Compact layout with tighter node spacing.
+   * Useful for dense presentation maps.
+   */
+  compact?: boolean;
+  /**
+   * Custom markdown parser. When provided, node topics (and arrow/summary
+   * labels) are passed through this function before rendering as HTML.
+   * Bring your own parser (e.g. marked, markdown-it) or a small custom one.
+   */
+  markdown?: MindMapMarkdownParser;
+  /**
+   * Rewrite remote node image URLs so they can be captured when exporting
+   * the map (avoids CORS failures during image generation). Not needed for
+   * normal on-screen viewing alone.
+   */
+  imageProxy?: (url: string) => string;
   onChange?: (data: MindMapData, operation: unknown) => void;
   onOperation?: (operation: unknown) => void;
   onSelectNodes?: (nodeObj: NodeObj[]) => void;
@@ -301,15 +319,16 @@ export const MindMap = forwardRef<MindMapRef, MindMapProps>(function MindMap(
     className,
     direction = SIDE,
     contextMenu = true,
-    nodeMenu = true,
     keypress = true,
     locale = "en",
     overflowHidden = false,
-    mainLinkStyle = 2,
     theme: themeProp,
     monochrome = false,
     fit = true,
     readonly = false,
+    compact = false,
+    markdown,
+    imageProxy,
     onChange,
     onOperation,
     onSelectNodes,
@@ -345,12 +364,16 @@ export const MindMap = forwardRef<MindMapRef, MindMapProps>(function MindMap(
   const onChangeRef = useRef(onChange);
   const onOperationRef = useRef(onOperation);
   const onSelectNodesRef = useRef(onSelectNodes);
+  const markdownRef = useRef(markdown);
+  const imageProxyRef = useRef(imageProxy);
 
   useEffect(() => {
     onChangeRef.current = onChange;
     onOperationRef.current = onOperation;
     onSelectNodesRef.current = onSelectNodes;
-  }, [onChange, onOperation, onSelectNodes]);
+    markdownRef.current = markdown;
+    imageProxyRef.current = imageProxy;
+  }, [onChange, onOperation, onSelectNodes, markdown, imageProxy]);
 
   // Track internal changes to avoid refresh loops
   const isInternalChangeRef = useRef(false);
@@ -370,20 +393,25 @@ export const MindMap = forwardRef<MindMapRef, MindMapProps>(function MindMap(
       initialData.theme ||
       getTheme(resolvedThemeRef.current === "dark", monochrome);
 
-    const options = {
+    const options: Options = {
       el: containerRef.current,
       direction,
       contextMenu,
       toolBar: false,
-      nodeMenu,
       keypress,
       locale,
       overflowHidden,
-      mainLinkStyle,
       editable: !readonly,
+      compact,
       alignment: "nodes",
       theme: themeToUse,
-    } as Options;
+      markdown: markdownRef.current
+        ? (text, obj) => markdownRef.current?.(text, obj) ?? text
+        : undefined,
+      imageProxy: imageProxyRef.current
+        ? (url) => imageProxyRef.current?.(url) ?? url
+        : undefined,
+    };
 
     try {
       const mind = new MindElixir(options);
@@ -401,8 +429,6 @@ export const MindMap = forwardRef<MindMapRef, MindMapProps>(function MindMap(
 
         // Event listeners (using refs to avoid re-initialization)
         mind.bus.addListener("operation", (operation) => {
-          console.log(operation);
-
           // Call onOperation if provided
           if (onOperationRef.current) {
             onOperationRef.current(operation);
@@ -436,11 +462,9 @@ export const MindMap = forwardRef<MindMapRef, MindMapProps>(function MindMap(
   }, [
     direction,
     contextMenu,
-    nodeMenu,
     keypress,
     locale,
     overflowHidden,
-    mainLinkStyle,
     monochrome,
     readonly,
     fit,
@@ -473,6 +497,37 @@ export const MindMap = forwardRef<MindMapRef, MindMapProps>(function MindMap(
     const newTheme = getTheme(resolvedTheme === "dark", monochrome);
     mindRef.current.changeTheme(newTheme);
   }, [resolvedTheme, monochrome, isLoaded, data?.theme]);
+
+  // Update compact mode when prop changes (after init)
+  const compactInitializedRef = useRef(false);
+  useEffect(() => {
+    if (!mindRef.current || !isLoaded) return;
+    // Skip first run — compact is already applied via Options at init
+    if (!compactInitializedRef.current) {
+      compactInitializedRef.current = true;
+      return;
+    }
+    mindRef.current.changeCompact(compact);
+  }, [compact, isLoaded]);
+
+  // Keep markdown / imageProxy in sync without re-initializing the map
+  const parsersInitializedRef = useRef(false);
+  useEffect(() => {
+    if (!mindRef.current || !isLoaded) return;
+    mindRef.current.markdown = markdown
+      ? (text, obj) => markdown(text, obj)
+      : undefined;
+    mindRef.current.imageProxy = imageProxy
+      ? (url) => imageProxy(url)
+      : undefined;
+    // Skip first run — parsers are already applied via Options at init
+    if (!parsersInitializedRef.current) {
+      parsersInitializedRef.current = true;
+      return;
+    }
+    // Re-render nodes so updated parsers take effect
+    mindRef.current.refresh();
+  }, [markdown, imageProxy, isLoaded]);
 
   return (
     <MindMapContext.Provider value={{ mind: mindInstance, isLoaded }}>

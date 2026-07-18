@@ -14,12 +14,29 @@ const siteUrl = "https://mindmapcn.vercel.app";
 
 const installCode = `npx shadcn@latest add ${siteUrl}/mindmaps/mindmap.json`;
 
-const usageCode = `import { MindMap, MindMapControls } from "@/registry/mindmap";
+const usageCode = `"use client";
+
+import { MindMap, MindMapControls } from "@/components/ui/mindmap";
+import type { MindElixirData } from "mind-elixir";
+
+const data: MindElixirData = {
+  nodeData: {
+    id: "root",
+    topic: "Mind Map",
+    children: [
+      { id: "a", topic: "Topic A" },
+      { id: "b", topic: "Topic B" },
+    ],
+  },
+};
 
 export function MyMindMap() {
   return (
+    // Give the container an explicit height — the map fills 100% of its parent.
     <div className="h-[500px] w-full border rounded-lg overflow-hidden relative">
-      <MindMap />
+      <MindMap data={data} readonly>
+        <MindMapControls />
+      </MindMap>
     </div>
   );
 }`;
@@ -54,13 +71,24 @@ export default function InstallationPage() {
         <p>Run the following command to add the mind map component:</p>
         <InstallCodeBlock command={installCode} showPrompt={false} />
         <p>
-          This will install <DocsCode>mind-elixir</DocsCode> and add the MindMap
-          component to your project.
+          This will install <DocsCode>mind-elixir</DocsCode> (and related
+          dependencies) and add the component to{" "}
+          <DocsCode>components/ui/mindmap.tsx</DocsCode> by default.
         </p>
       </DocsSection>
 
       <DocsSection title="Usage">
-        <p>Import and use the MindMap component:</p>
+        <p>
+          Import from the installed path and wrap the map in a container with an{" "}
+          <strong className="text-foreground">explicit height</strong>. The map
+          uses <DocsCode>h-full</DocsCode> / <DocsCode>w-full</DocsCode>, so a
+          parent without height will collapse to a blank area.
+        </p>
+        <p>
+          In the Next.js App Router, mark the file with{" "}
+          <DocsCode>&quot;use client&quot;</DocsCode> — the component uses browser
+          APIs.
+        </p>
         <CodeBlock code={usageCode} />
         <div className="h-[300px] w-full border rounded-lg overflow-hidden relative bg-background">
           <MindMap fit={true}>
@@ -70,8 +98,9 @@ export default function InstallationPage() {
       </DocsSection>
 
       <DocsNote>
-        <strong>Note:</strong> The mind map uses <code>oklch</code> colors for accessibility and theme support.
-        It automatically switches between light and dark themes.
+        <strong>Note:</strong> The mind map uses <code>oklch</code> colors for
+        accessibility and theme support. It automatically switches between light
+        and dark themes.
       </DocsNote>
     </DocsLayout>
   );

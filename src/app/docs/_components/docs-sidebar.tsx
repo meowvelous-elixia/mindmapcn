@@ -7,6 +7,7 @@ import {
   Code,
   Braces,
   Map,
+  Database,
 } from "lucide-react";
 
 import {
@@ -29,6 +30,11 @@ const navigation = [
       { title: "Introduction", href: "/docs", icon: BookOpen },
       { title: "Installation", href: "/docs/installation", icon: Code },
       { title: "Usage", href: "/docs/usage", icon: Map },
+      {
+        title: "Data Structure",
+        href: "/docs/data-structure",
+        icon: Database,
+      },
       {
         title: "API Reference",
         href: "/docs/api-reference",

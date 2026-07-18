@@ -4,9 +4,11 @@ import { BasicMindMapExample } from "../_components/examples/basic-mindmap-examp
 import { OnChangeMindMapExample } from "../_components/examples/onchange-mindmap-example";
 import { ReadonlyMindMapExample } from "../_components/examples/readonly-mindmap-example";
 import { DirectionMindMapExample } from "../_components/examples/direction-mindmap-example";
-import { SelectNodesMindMapExample } from "../_components/examples/select-nodes-mindmap-example";
 import { LocaleMindMapExample } from "../_components/examples/locale-mindmap-example";
 import { CustomThemeMindMapExample } from "../_components/examples/custom-theme-mindmap-example";
+import { MarkdownMindMapExample } from "../_components/examples/markdown-mindmap-example";
+import { CompactMindMapExample } from "../_components/examples/compact-mindmap-example";
+import { ImageProxyMindMapExample } from "../_components/examples/image-proxy-mindmap-example";
 import { getExampleSource } from "@/lib/get-example-source";
 import { Metadata } from "next";
 
@@ -19,21 +21,25 @@ export default function UsagePage() {
   const onChangeMindmapSource = getExampleSource("onchange-mindmap-example.tsx");
   const readonlyMindmapSource = getExampleSource("readonly-mindmap-example.tsx");
   const directionMindmapSource = getExampleSource("direction-mindmap-example.tsx");
-  const selectNodesMindmapSource = getExampleSource("select-nodes-mindmap-example.tsx");
   const localeMindmapSource = getExampleSource("locale-mindmap-example.tsx");
   const customThemeMindmapSource = getExampleSource("custom-theme-mindmap-example.tsx");
+  const markdownMindmapSource = getExampleSource("markdown-mindmap-example.tsx");
+  const compactMindmapSource = getExampleSource("compact-mindmap-example.tsx");
+  const imageProxyMindmapSource = getExampleSource("image-proxy-mindmap-example.tsx");
 
   return (
     <DocsLayout
       title="Usage"
       description="The simplest way to add an interactive mind map to your application."
       prev={{ title: "Installation", href: "/docs/installation" }}
-      next={{ title: "API Reference", href: "/docs/api-reference" }}
+      next={{ title: "Data Structure", href: "/docs/data-structure" }}
     >
       <DocsSection>
         <p>
           The <DocsCode>MindMap</DocsCode> component initializes the mind map canvas,
-          handles theming, and provides context for child components.
+          handles theming, and provides context for child components. It is designed
+          for presentation-first maps; use <DocsCode>readonly</DocsCode> when viewers
+          should not edit nodes.
         </p>
       </DocsSection>
 
@@ -65,6 +71,45 @@ export default function UsagePage() {
         <ReadonlyMindMapExample />
       </ComponentPreview>
 
+      <DocsSection title="Markdown Nodes">
+        <p>
+          Pass a <DocsCode>markdown</DocsCode> function to render rich text in node
+          topics. Bring your own parser (for example{" "}
+          <DocsCode>marked</DocsCode> or <DocsCode>markdown-it</DocsCode>), or use a
+          small custom implementation for bold, italic, and code as shown below.
+        </p>
+      </DocsSection>
+
+      <ComponentPreview code={markdownMindmapSource}>
+        <MarkdownMindMapExample />
+      </ComponentPreview>
+
+      <DocsSection title="Compact Layout">
+        <p>
+          Enable <DocsCode>compact</DocsCode> for tighter spacing. Useful when embedding
+          dense knowledge maps or fitting more nodes into a card-sized viewport.
+        </p>
+      </DocsSection>
+
+      <ComponentPreview code={compactMindmapSource}>
+        <CompactMindMapExample />
+      </ComponentPreview>
+
+      <DocsSection title="Image Proxy (Export CORS)">
+        <p>
+          When nodes include remote images, exporting the map to a file can fail
+          because of cross-origin restrictions. Pass{" "}
+          <DocsCode>imageProxy</DocsCode> to rewrite those image URLs through a
+          same-origin or CORS-friendly proxy so the export can capture them.
+          This is only needed for image generation / export — not for normal
+          on-screen viewing.
+        </p>
+      </DocsSection>
+
+      <ComponentPreview code={imageProxyMindmapSource}>
+        <ImageProxyMindMapExample />
+      </ComponentPreview>
+
       <DocsSection title="Custom Layout Direction">
         <p>
           Control how the mind map branches expand by setting the{" "}
@@ -75,18 +120,6 @@ export default function UsagePage() {
 
       <ComponentPreview code={directionMindmapSource}>
         <DirectionMindMapExample />
-      </ComponentPreview>
-
-      <DocsSection title="Tracking Node Selection">
-        <p>
-          Use the <DocsCode>onSelectNodes</DocsCode> callback to respond to node
-          selection events. This is useful for implementing custom actions, analytics,
-          or synchronized views based on what users are focusing on.
-        </p>
-      </DocsSection>
-
-      <ComponentPreview code={selectNodesMindmapSource}>
-        <SelectNodesMindMapExample />
       </ComponentPreview>
 
       <DocsSection title="Localization">
