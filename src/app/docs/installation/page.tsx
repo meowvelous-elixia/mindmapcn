@@ -9,10 +9,7 @@ import { CodeBlock } from "../_components/code-block";
 import { InstallCodeBlock } from "../_components/install-code-block";
 import { Metadata } from "next";
 import { MindMap, MindMapControls } from "@/registry/mindmap";
-
-const siteUrl = "https://mindmapcn.vercel.app";
-
-const installCode = `npx shadcn@latest add ${siteUrl}/mindmaps/mindmap.json`;
+import { mindmapInstallCommand as installCode } from "@/lib/llm-prompts";
 
 const usageCode = `"use client";
 

@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 
 import { ThemeProvider } from "@/components/theme-provider";
+import { siteUrl as defaultSiteUrl } from "@/lib/llm-prompts";
 import "./globals.css";
 
 const geist = Geist({
@@ -15,7 +16,7 @@ const geistMono = Geist_Mono({
   variable: "--font-mono",
 });
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || defaultSiteUrl;
 const siteName = "mindmapcn";
 const creator = "https://github.com/ssshooter";
 const siteDescription =

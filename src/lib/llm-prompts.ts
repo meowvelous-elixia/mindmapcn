@@ -1,4 +1,4 @@
-export const siteUrl = "https://mindmapcn.vercel.app";
+export const siteUrl = "https://mindmapcn.mind-elixir.com";
 
 export const mindmapInstallCommand = `npx shadcn@latest add ${siteUrl}/mindmaps/mindmap.json`;
 

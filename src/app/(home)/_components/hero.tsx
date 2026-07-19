@@ -4,10 +4,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { InstallCodeBlock } from "@/app/docs/_components/install-code-block";
-
-const siteUrl = "https://mindmapcn.vercel.app";
-
-const installCommand = `npx shadcn@latest add ${siteUrl}/mindmaps/mindmap.json`;
+import { mindmapInstallCommand as installCommand } from "@/lib/llm-prompts";
 
 export function Hero() {
   return (
